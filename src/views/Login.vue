@@ -102,7 +102,8 @@ label {
 
 .login-container {
 	width: 30em;
-	padding: 10%;
+	margin-top: 10%;
+	padding: 3em;
 }
 
 .painting {
