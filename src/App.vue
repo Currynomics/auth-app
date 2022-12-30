@@ -3,13 +3,17 @@
 		<div class="footer-separator">
 
 		<div id="nav">
-			<div class="nav-logo"></div>
+			<router-link to="/">
+				<div class="nav-logo"></div>
+			</router-link>
+
 			<div class="nav-content">
-				<router-link to="/">Home</router-link>
 				<a href="https://discord.gg/G4b2jrerb6" target="_blank">Help</a>
-				<router-link v-if="this.$store.state.user" to="/profile">Profile</router-link>
-				<router-link v-if="!this.$store.state.user" to="/join">Join</router-link>
-				<button v-else type="button" class="button" @click="logout">
+				<router-link v-if="this.$store.state.pUser" to="/profile">Profile</router-link>
+				<router-link v-if="!this.$store.state.pUser" to="/join">Join</router-link>
+				<router-link v-if="!userName" to="/login">Login</router-link>
+				<!-- <router-link v-if="userName"><div @click="logout">Logout</div></router-link> -->
+				<button v-if="userName" type="button" class="red-button" @click="logout" :disabled="loadingLogout" :class="{loading:loadingLogout}" >
 					Logout
 				</button>
 			</div>
@@ -26,11 +30,26 @@
 import Footer from "@/components/Footer.vue";
 
 export default {
+	data() {
+		return {
+			loadingLogout: false
+		}
+	},
+	computed: {
+		userName(){
+			if(this.$store.state.pUser) return this.$store.state.pUser.user.firstName;
+			return false
+		}
+	},
 	components: {
 		Footer
 	},
+	created() {
+		this.loadingLogout = false
+	},
 	methods: {
-		logout() {
+		async logout() {
+			this.loadingLogout=true
 			this.$store.dispatch('logout')
 		},
 	},

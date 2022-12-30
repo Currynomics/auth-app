@@ -56,7 +56,6 @@ export default {
 			else return "Create"
 		},
 		passwordIsValid() {
-			this.ctaButtonTitle = "Create"; //eslint-disable-line
 			return  validatePasswordStrength(this.passwordOne, this.passwordTwo)
 		},
 	},

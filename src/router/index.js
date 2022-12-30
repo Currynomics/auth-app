@@ -28,6 +28,12 @@ const routes = [
 	},
 	{
 		path: '/join',
+		name: 'Join',
+		component: () =>
+			import(/* webpackChunkName: "login" */ '../views/Join.vue'),
+	},
+	{
+		path: '/login',
 		name: 'Login',
 		component: () =>
 			import(/* webpackChunkName: "login" */ '../views/Login.vue'),
@@ -47,7 +53,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	const loggedIn = localStorage.getItem('user')
+	const loggedIn = localStorage.getItem('pUser')
 
 	if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
 		next('/')

@@ -1,6 +1,29 @@
 import { postRequest } from "../http";
+import randomWords from 'random-words'
 
-const RESET_PASSWORD_URL = "http://localhost:3000/api/users/reset-password" // todo: replace with ENV var.
+const RESET_PASSWORD_URL = process.env.BACKEND_BASE_URL + "/api/users/reset-password"
+const LOGIN_URL = process.env.BACKEND_BASE_URL + "/api/users/login"
+
+const generateRandomWords = (nrOfWords) => {
+    const words = randomWords(nrOfWords).toString().replaceAll(",", " ");
+    return words;
+}
+
+const login = async (email, password) => {
+    try {
+        const body ={
+            email: email,
+            password: password
+        }
+
+        const res = await postRequest(LOGIN_URL, body)
+        console.log("res: ", res)
+        return { data: res.data, code: 200, message: "OK" }
+    } catch (error) {
+        console.log("error: ", error)
+        return { data: undefined, code: 400, message: error.message }
+    }
+}
 
 const createPassword = async (token, password) => {
     try {
@@ -8,17 +31,17 @@ const createPassword = async (token, password) => {
             token: token,
             password: password
         }
-    
+
         const res = await postRequest(RESET_PASSWORD_URL, body)
         console.log("res: ", res)
-        return {data: res.data, code: 200, message: "OK"}
+        return { data: res.data, code: 200, message: "OK" }
     } catch (error) {
         console.log("error: ", error)
-        return {data: undefined, code: 400, message: error.message}
+        return { data: undefined, code: 400, message: error.message }
     }
 }
 
-const validatePasswordStrength = (password, pswRe)=>{
+const validatePasswordStrength = (password, pswRe) => {
     const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; //eslint-disable-line
     const digits = /\d/;  //eslint-disable-line
     const caps = /[A-Z]/; //eslint-disable-line
@@ -32,21 +55,21 @@ const validatePasswordStrength = (password, pswRe)=>{
         match: false,
         valid: false
     }
-    if(!password) return response
+    if (!password) return response
 
     var valid = true
-    
-    if(password.length >= 8) response.length=true
+
+    if (password.length >= 8) response.length = true
     else valid = false
-    if(specialChars.test(password)) response.special=true
+    if (specialChars.test(password)) response.special = true
     else valid = false
-    if(digits.test(password)) response.digit=true
+    if (digits.test(password)) response.digit = true
     else valid = false
-    if(caps.test(password)) response.caps=true
+    if (caps.test(password)) response.caps = true
     else valid = false
-    if(low.test(password)) response.low=true
+    if (low.test(password)) response.low = true
     else valid = false
-    if(password == pswRe) response.match = true
+    if (password == pswRe) response.match = true
     else valid = false
 
     response.valid = valid;
@@ -55,4 +78,4 @@ const validatePasswordStrength = (password, pswRe)=>{
 
 }
 
-export {createPassword, validatePasswordStrength}
+export { createPassword, validatePasswordStrength, login, generateRandomWords }

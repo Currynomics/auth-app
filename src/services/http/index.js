@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-const postRequest = async (url, body)=>{
-    const res = await axios.post(url, body);
+const postRequest = async (url, body, headers)=>{
+    const h =  {
+        headers: headers
+    }
+    const res = await axios.post(url, body, h);
     return res;
 }
 

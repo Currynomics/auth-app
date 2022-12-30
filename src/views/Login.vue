@@ -1,50 +1,52 @@
 <template>
 	<div class="container">
 		<div class="painting"></div>
-		<div class="login">
+		<div class="login-container">
 			<form @submit.prevent="login">
-				<h3>Become Early Member</h3>
+				<h3>Login</h3>
 				<label>
 					<input v-model="email" type="email" name="email" placeholder="Email" required
-						class="email-input email-extra" value />
+						class="user-input email-extra" value />
 				</label>
-				<div class="submit">
-					<button type="submit" name="button">
-						Join
-					</button>
-				</div>
+				<label>
+					<input v-model="password" type="password" name="password" placeholder="Password" required
+						class="user-input" value />
+				</label>
+
+				<button @click="login()" name="button" :disabled="loadingLogin" class="red-button" :class={loading:loadingLogin}>Login</button>
+				<div class="err-msg">{{ message }}</div>
+				
 			</form>
 		</div>
 	</div>
 </template>
 <script>
-import { SDKError, RPCError, ExtensionError } from 'magic-sdk'
-
 export default {
 	data() {
 		return {
-			email: '',
+			email: 'kaspartr@gmail.com',
+			password: 'kaspar@Triebstok32',
+			loadingLogin: false,
+			message: ""
 		}
 	},
 	methods: {
 		login() {
+			this.loadingLogin = true
+			this.message = ""
 			this.$store
-				.dispatch('login', {
-					email: this.email,
+				.dispatch('pLogin', {
+					email: this.email, password: this.password
 				})
 				.then(() => {
 					this.$router.push({ name: 'Profile' })
 				})
 				.catch((err) => {
-					if (err instanceof SDKError) {
-						console.log(err)
-					}
-					if (err instanceof RPCError) {
-						console.log(err)
-					}
-					if (err instanceof ExtensionError) {
-						console.log(err)
-					}
+					this.message = "Login failed"
+					console.log(err)
+				})
+				.finally(() => {
+					this.loadingLogin = false
 				})
 		},
 	},
@@ -52,7 +54,8 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import '../assets/styles/index.css';
 
 *,
 *::before,
@@ -76,51 +79,6 @@ label {
 	text-align: center;
 }
 
-.email-input {
-	padding: 10px;
-	margin: 1rem auto;
-	border: 1px solid #ccc;
-	border-radius: 50px;
-	outline: none;
-	transition: 0.5s;
-	width: 80%;
-}
-
-.email-input:focus {
-	border: 1px solid #ac3633;
-}
-
-.submit {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.submit>a {
-	text-decoration: none;
-}
-
-.submit>button {
-	padding: 0.6rem 1rem;
-	cursor: pointer;
-	background: #fff;
-	border: 1px solid #ccc;
-	border-radius: 20px;
-	width: 80%;
-	outline: none;
-	transition: 0.3s;
-	margin: 0 auto;
-	font-size: 16px;
-	background-color: #ac3633;
-	color: #ffffff;
-	font-weight: bold;
-}
-
-.submit>button:hover {
-	border-color: #ffffff;
-}
-
 .error {
 	color: #ac3633;
 	margin: 1rem 0 0;
@@ -134,17 +92,17 @@ label {
 } */
 
 
-.container{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 2em;
-    justify-content: flex-start;
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	padding: 2em;
+	justify-content: flex-start;
 }
 
-.login {
+.login-container {
 	width: 30em;
-    padding-top: 15%;
+	padding: 10%;
 }
 
 .painting {
