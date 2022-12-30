@@ -1,8 +1,8 @@
 import { postRequest } from "../http";
 import randomWords from 'random-words'
-
-const RESET_PASSWORD_URL = process.env.BACKEND_BASE_URL + "/api/users/reset-password"
-const LOGIN_URL = process.env.BACKEND_BASE_URL + "/api/users/login"
+import {VAR} from '../../assets/constants/index'
+const RESET_PASSWORD_URL = VAR.STAGE_ADMIN_BASE_URL + "/api/users/reset-password"
+const LOGIN_URL = VAR.STAGE_ADMIN_BASE_URL + "/api/users/login"
 
 const generateRandomWords = (nrOfWords) => {
     const words = randomWords(nrOfWords).toString().replaceAll(",", " ");

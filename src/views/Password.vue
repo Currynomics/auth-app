@@ -9,7 +9,7 @@
 						class="user-input" value />
 				</label>
 				<label>
-					<input v-model="passwordTwo" type="password" name="password" placeholder="Password" required
+					<input v-model="passwordTwo" type="password" name="password" placeholder="Password again" required
 						class="user-input" value />
 				</label>
 				<div>

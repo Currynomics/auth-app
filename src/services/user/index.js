@@ -1,6 +1,7 @@
 import { postRequest } from "../http";
+import {VAR} from '../../assets/constants/index'
 
-const SET_USER_WORDS_URL = process.env.BACKEND_BASE_URL + "/api/users/words"
+const SET_USER_WORDS_URL = VAR.STAGE_ADMIN_BASE_URL + "/api/users/words"
 
 const setUserSecretWords = async (token, words) => {
     try {
