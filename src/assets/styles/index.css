@@ -1,0 +1,54 @@
+.nav-logo {
+	background: url("../logo_s.png") no-repeat;
+	background-size: cover;
+	height: 32px;
+	width: 200px;
+	width: 250px;
+}
+
+.nav-logo-white {
+	background: url("../logo_white.png") no-repeat;
+	background-size: cover;
+	height: 32px;
+	width: 200px;
+	width: 250px;
+}
+
+.user-input {
+	padding: 10px;
+	margin: 1rem auto;
+	border: 1px solid #ccc;
+	border-radius: 50px;
+	outline: none;
+	transition: 0.5s;
+	width: 80%;
+}
+
+.user-input:focus {
+	border: 1px solid #ac3633;
+}
+
+.red-button{
+    padding: 0.6rem 1rem;
+	cursor: pointer;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	width: 80%;
+	outline: none;
+	transition: 0.3s;
+	margin: 0 auto;
+	font-size: 16px;
+	background-color: #ac3633;
+	color: #ffffff;
+	font-weight: bold;
+}
+.red-button:hover {
+	border-color: #ffffff;
+
+}
+
+.red-button.disabled{
+	background-color: #C7CED9;
+
+}

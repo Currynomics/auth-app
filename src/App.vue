@@ -1,0 +1,99 @@
+<template>
+	<div id="app">
+		<div class="footer-separator">
+
+		<div id="nav">
+			<div class="nav-logo"></div>
+			<div class="nav-content">
+				<router-link to="/">Home</router-link>
+				<a href="https://discord.gg/G4b2jrerb6" target="_blank">Help</a>
+				<router-link v-if="this.$store.state.user" to="/profile">Profile</router-link>
+				<router-link v-if="!this.$store.state.user" to="/join">Join</router-link>
+				<button v-else type="button" class="button" @click="logout">
+					Logout
+				</button>
+			</div>
+
+		</div>
+		<router-view />
+	</div>
+
+		<Footer/>
+
+	</div>
+</template>
+<script>
+import Footer from "@/components/Footer.vue";
+
+export default {
+	components: {
+		Footer
+	},
+	methods: {
+		logout() {
+			this.$store.dispatch('logout')
+		},
+	},
+}
+</script>
+<style>
+  @import './assets/styles/index.css';
+
+.footer-separator{
+	min-height: 100vh;
+}
+#app {
+	font-family: Poppins, Avenir, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-align: center;
+	color: #2c3e50;
+}
+
+#nav {
+	padding: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.nav-content {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	min-width: 350px;
+}
+
+#nav a {
+	font-weight: bold;
+	padding: 5px;
+	text-decoration: none;
+	color: #2c3e50;
+}
+
+
+
+#nav a.router-link-exact-active {
+	color: #AC3633;
+}
+
+#nav>button {
+	padding: 0.6rem 1rem;
+	cursor: pointer;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 50px;
+	width: 5rem;
+	outline: none;
+	transition: 0.3s;
+	margin: 0 auto;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#nav>button:hover {
+	background-color: #AC3633;
+	color: white;
+}
+</style>
