@@ -24,8 +24,8 @@
 export default {
 	data() {
 		return {
-			email: 'kaspartr@gmail.com',
-			password: 'kaspar@Triebstok32',
+			email: '',
+			password: '',
 			loadingLogin: false,
 			message: ""
 		}
