@@ -20,7 +20,7 @@
 	border-radius: 20px;
 	outline: none;
 	transition: 0.5s;
-	padding: 10px;
+	padding: 10px 20px 10px 20px;
 	font-size: 16px;
 }
 
@@ -28,16 +28,18 @@
 	border: 1px solid #ac3633;
 }
 
-.err-msg{
+.err-msg {
 	margin-top: 1em;
 	text-align: center;
 	font-size: 14px;
 	color: #ac3633;
-	font-weight: bold;;
+	font-weight: bold;
+	;
 }
 
-.red-button{
-    padding: 0.6rem 1rem;
+.red-button {
+	padding: 0.6rem 1rem;
+	min-width: 100px;
 	cursor: pointer;
 	background: #fff;
 	border: 1px solid #ccc;
@@ -50,16 +52,71 @@
 	color: #ffffff;
 	font-weight: bold;
 }
+
 .red-button:hover {
 	border-color: #ffffff;
 
 }
 
-.red-button.disabled{
+.red-button.disabled {
 	background-color: #C7CED9;
 }
 
-.red-button.loading{
+.red-button.loading {
 	background-color: #C7CED9;
 
+}
+.notification-container{
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	right: 1em;
+	bottom: 1em;
+}
+.notification {
+	padding: 10px;
+	background-color: #DBEFFB;
+	color: #283047;
+	border-radius: 10px;
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+	display: flex;
+	margin-top: 1em;
+}
+
+.notification span {
+	display: inline-flex;
+	align-items: center;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.notification-btn {
+	cursor: pointer;
+	margin-right: 1em;
+	height: 22px;
+}
+
+.notification-btn svg {
+	font-size: 22px;
+	line-height: 22px;
+}
+
+.notification.error {
+	background-color: #FEECEE;
+}
+
+/* Non mobile only*/
+@media (min-width: 767px) {
+	.hidden-n-mobile {
+		display: none;
+	}
+}
+
+/* Mobile only */
+@media (max-width: 767px) {
+	.hidden-mobile {
+		display: none;
+	}
 }

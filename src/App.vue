@@ -2,27 +2,34 @@
 	<div id="app">
 		<div class="footer-separator">
 
-		<div id="nav">
-			<router-link to="/">
-				<div class="nav-logo"></div>
-			</router-link>
+			<div id="nav">
+				<router-link to="/">
+					<div class="nav-logo hidden-mobile"></div>
+				</router-link>
 
-			<div class="nav-content">
-				<a href="https://discord.gg/G4b2jrerb6" target="_blank">Help</a>
-				<router-link v-if="this.$store.state.pUser" to="/profile">Profile</router-link>
-				<router-link v-if="!this.$store.state.pUser" to="/join">Join</router-link>
-				<router-link v-if="!userName" to="/login">Login</router-link>
-				<!-- <router-link v-if="userName"><div @click="logout">Logout</div></router-link> -->
-				<button v-if="userName" type="button" class="red-button" @click="logout" :disabled="loadingLogout" :class="{loading:loadingLogout}" >
-					Logout
-				</button>
+				<div class="nav-content">
+					<a href="https://discord.gg/G4b2jrerb6" target="_blank">Help</a>
+					<router-link v-if="this.$store.state.pUser" to="/profile">Profile</router-link>
+					<router-link v-if="!this.$store.state.pUser" to="/join">Join</router-link>
+					<router-link v-if="!userName" to="/login">Login</router-link>
+					<!-- <router-link v-if="userName"><div @click="logout">Logout</div></router-link> -->
+					<button v-if="userName" type="button" class="red-button" @click="logout" :disabled="loadingLogout"
+						:class="{ loading: loadingLogout }">
+						Logout
+					</button>
+				</div>
+
 			</div>
+			<router-view @emitNotification="openNotification"/>
 
+			<div class="notification-container">
+				<div v-for="(item, index) in notifications" v-bind:key="index" class="notification" :class="{error: item.class=='error'}">
+					<div class="notification-btn" @click="closeNotification(index)"><BIconXCircle/></div><span>{{item.message}}</span></div>
+
+			</div>
 		</div>
-		<router-view />
-	</div>
 
-		<Footer/>
+		<Footer />
 
 	</div>
 </template>
@@ -32,12 +39,13 @@ import Footer from "@/components/Footer.vue";
 export default {
 	data() {
 		return {
-			loadingLogout: false
+			loadingLogout: false,
+			notifications: []
 		}
 	},
 	computed: {
-		userName(){
-			if(this.$store.state.pUser) return this.$store.state.pUser.user.firstName;
+		userName() {
+			if (this.$store.state.pUser) return this.$store.state.pUser.user.firstName;
 			return false
 		}
 	},
@@ -49,18 +57,25 @@ export default {
 	},
 	methods: {
 		async logout() {
-			this.loadingLogout=true
+			this.loadingLogout = true
 			this.$store.dispatch('logout')
 		},
+		closeNotification(index){
+			this.notifications.splice(index, 1);
+		},
+		openNotification(notification){
+			this.notifications.push(notification)
+		}
 	},
 }
 </script>
 <style>
-  @import './assets/styles/index.css';
+@import './assets/styles/index.css';
 
-.footer-separator{
+.footer-separator {
 	min-height: 100vh;
 }
+
 #app {
 	font-family: Poppins, Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;

@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
-		<div class="painting"></div>
+		<div class="painting hidden-mobile"></div>
 		<div class="login">
-			<form @submit.prevent="createPassword	">
+			<form @submit.prevent="createPassword">
 				<h3>Hi {{ name }}, create a password </h3>
 				<label>
 					<input v-model="passwordOne" type="password" name="password" placeholder="Password" required
@@ -13,27 +13,32 @@
 						class="user-input" value />
 				</label>
 				<div>
-					<button @click="createPassword()" name="button" :disabled="!passwordIsValid.valid || ctaButtonLoading" class="red-button" :class={disabled:!passwordIsValid.valid}>
-						{{ctaButtonTitle}}
+					<button @click="createPassword()" name="button" style="width: 100%;"
+						:disabled="!passwordIsValid.valid || ctaButtonLoading" class="red-button"
+						:class="{ disabled: !passwordIsValid.valid }">
+						{{ ctaButtonTitle }}
 					</button>
 
 					<div class="psw-guide-container" v-if="!pswCreated">
 						<p><strong>Password must:</strong></p>
-						<p class="psw-guide" :class={err:!passwordIsValid.length}>be at least 8 characters long</p>
-						<p class="psw-guide" :class={err:!passwordIsValid.special}>include special character</p>
-						<p class="psw-guide" :class={err:!passwordIsValid.digit}>include number</p>
-						<p class="psw-guide" :class={err:!passwordIsValid.caps}>include capital character</p>
-						<p class="psw-guide" :class={err:!passwordIsValid.low}>include lower case character</p>
-						<p class="psw-guide" :class={err:!passwordIsValid.match}>match with re-type</p>
+						<p class="psw-guide" :class="{ err: !passwordIsValid.length }">be at least 8 characters long</p>
+						<p class="psw-guide" :class="{ err: !passwordIsValid.special }">include special character</p>
+						<p class="psw-guide" :class="{ err: !passwordIsValid.digit }">include number</p>
+						<p class="psw-guide" :class="{ err: !passwordIsValid.caps }">include capital character</p>
+						<p class="psw-guide" :class="{ err: !passwordIsValid.low }">include lower case character</p>
+						<p class="psw-guide" :class="{ err: !passwordIsValid.match }">match with re-type</p>
 					</div>
 				</div>
 			</form>
+			<button @click="testSuccess()">
+				Success
+			</button>
 		</div>
 	</div>
 </template>
 <script>
-import {createPassword} from '../services/auth/index'
-import {validatePasswordStrength} from '../services/auth/index'
+import { createPassword } from '../services/auth/index'
+import { validatePasswordStrength } from '../services/auth/index'
 export default {
 	data() {
 		return {
@@ -49,29 +54,36 @@ export default {
 		this.name = this.$route.query.name;
 	},
 	computed: {
-		ctaButtonTitle(){
-			if(this.ctaButtonLoading) return "Loading...";
-			if(this.pswError) return "Failed";
-			if(this.pswCreated) return "Password created"
+		ctaButtonTitle() {
+			if (this.ctaButtonLoading) return "Loading...";
 			else return "Create"
 		},
 		passwordIsValid() {
-			return  validatePasswordStrength(this.passwordOne, this.passwordTwo)
+			return validatePasswordStrength(this.passwordOne, this.passwordTwo);
 		},
 	},
 	methods: {
+		testSuccess() {
+			this.$emit('emitNotification', { message: "From password.vue", class: "info" });
+			this.$router.push({ name: 'Login' })
+		},
 		async createPassword() {
-			if(this.passwordIsValid && this.$route.query.token){
-				this.ctaButtonLoading=true
+			if (this.passwordIsValid && this.$route.query.token) {
+				this.ctaButtonLoading = true
 				const res = await createPassword(this.$route.query.token, this.passwordOne)
-				if(res.code == 200){
+				if (res.code == 200) {
 					this.passwordOne = ''
 					this.passwordTwo = ''
 					this.pswError = false
 					this.pswCreated = true
+					this.$emit('emitNotification', { message: "Password created.", class: "info" })
+					this.$router.push({ name: 'Login' })
 				}
-				else this.pswError = true
-				this.ctaButtonLoading=false
+				else {
+					this.$emit('emitNotification', { message: "Password creation failed.", class: "error" })
+					this.pswError = true
+				}
+				this.ctaButtonLoading = false
 			}
 		},
 	},
@@ -135,13 +147,12 @@ label {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
-	padding: 2em;
 	justify-content: flex-start;
 }
 
 .login {
 	width: 30em;
-	padding-top: 15%;
+	padding: 15% 1em 1em 2em;
 }
 
 .painting {
@@ -152,9 +163,10 @@ label {
 	border-radius: 0px;
 	background: url("../assets/painting.png") no-repeat;
 	background-size: contain;
+	margin-left: 2em;
 }
 
-.psw-guide-container{
+.psw-guide-container {
 	text-align: left;
 	width: 80%;
 	margin: 0 auto;
@@ -164,6 +176,7 @@ label {
 	color: #1E5C4E;
 	font-weight: bold;
 }
+
 .psw-guide.err {
 	color: #AC3834;
 	font-weight: 400;
