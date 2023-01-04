@@ -12,15 +12,15 @@
 					<router-link v-if="this.$store.state.pUser" to="/profile">Profile</router-link>
 					<router-link v-if="!this.$store.state.pUser" to="/join">Join</router-link>
 					<router-link v-if="!userName" to="/login">Login</router-link>
-					<!-- <router-link v-if="userName"><div @click="logout">Logout</div></router-link> -->
-					<button v-if="userName" type="button" class="red-button" @click="logout" :disabled="loadingLogout"
+					<!-- <router-link v-if="userName"><div @click="logOut">Logout</div></router-link> -->
+					<button v-if="userName" type="button" class="red-button" @click="logOut" :disabled="loadingLogout"
 						:class="{ loading: loadingLogout }">
 						Logout
 					</button>
 				</div>
 
 			</div>
-			<router-view @emitNotification="openNotification"/>
+			<router-view @emitNotification="openNotification" @emitLogout="logOut"/>
 
 			<div class="notification-container">
 				<div v-for="(item, index) in notifications" v-bind:key="index" class="notification" :class="{error: item.class=='error'}">
@@ -54,10 +54,11 @@ export default {
 	},
 	created() {
 		this.loadingLogout = false
-	},
+	},	
 	methods: {
-		async logout() {
+		async logOut() {
 			this.loadingLogout = true
+			this.$store.dispatch('pLogout')
 			this.$store.dispatch('logout')
 		},
 		closeNotification(index){

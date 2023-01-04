@@ -30,9 +30,9 @@
 					</div>
 				</div>
 			</form>
-			<button @click="testSuccess()">
+			<!-- <button @click="testSuccess()">
 				Success
-			</button>
+			</button> -->
 		</div>
 	</div>
 </template>

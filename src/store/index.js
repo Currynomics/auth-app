@@ -39,7 +39,6 @@ export default new Vuex.Store({
 		async pLogin({ commit }, data) {
 			const res = await login(data.email, data.password)
 			if(res.code == 200) {
-				console.log("res.data: ", res.data)
 				commit('SET_P_USER_DATA', res.data)
 				return res.data
 			}else {

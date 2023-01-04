@@ -5,21 +5,32 @@
 		<div v-if="!userSecret && !secretCreated">
 			<h3>
 				Here are your secret words, shown only once.
-				<pre>{{secret}}</pre>
+				<pre>{{ secret }}</pre>
 			</h3>
-			<button @click="wroteDown()" name="button" class="red-button">
-				I wrote them down.
+			<p>Write it on paper. Use these to sign future transactions.</p>
+
+			<button @click="wroteDown()" name="button" :disabled="loading" class="red-button"
+				:class="{ disabled: loading }">
+				I wrote it down
 			</button>
+
+
 		</div>
-		<div v-else-if="secretCreated">
+		<div v-else-if="secretCreated || userSecret">
 			<h3>{{ message }}</h3>
+			<button @click="exitToAdmin()" class="red-button">
+				Go To Admin
+			</button>
+			<p><small>You will be logged out</small></p>
 		</div>
+
+
 	</div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import {generateRandomWords} from '../services/auth/index'
-import {setUserSecretWords} from '../services/user/index'
+import { generateRandomWords } from '../services/auth/index'
+import { setUserSecretWords } from '../services/user/index'
 export default {
 	computed: mapState({
 		email: (state) => state.pUser.user.email,
@@ -30,7 +41,8 @@ export default {
 		return {
 			secret: "",
 			message: "",
-			secretCreated: false
+			secretCreated: false,
+			loading: false
 		}
 	},
 	// computed: {
@@ -40,22 +52,28 @@ export default {
 	// },
 	created() {
 		this.secret = generateRandomWords(4)
-	},	
+	},
 	methods: {
-		async wroteDown(){
-			console.log("wrote down called")
-			this.setting = true
+		async wroteDown() {
+			this.loading = true
 			const res = await setUserSecretWords(this.$store.state.pUser.token, this.secret)
 			this.secret = ''
-			if(res.code == 200){
-				console.log("all good")
-				this.message = 'Your secret words have been saved. You can now log out.'
-				this.secretCreated=true
-			} 
+			if (res.code == 200) {
+				this.$emit('emitNotification', { message: "Secret saved. You can log out.", class: "info" });
+				this.message = 'Your secret words have been saved. You can now proceed to the Admin Dashboard.'
+				this.secretCreated = true
+			}
 			else {
 				console.log("fail | error:", res.message)
+				this.$emit('emitNotification', { message: "Something is not right.", class: "error" });
+
 				this.message = 'Something went wrong, please contact admin@redcurry.co'
 			}
+			this.loading = false
+		},
+		exitToAdmin() {
+			window.open("https://admin.redcurry.co");
+			this.$emit('emitLogout')
 		}
 	}
 }
