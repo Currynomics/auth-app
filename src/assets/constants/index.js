@@ -1,5 +1,5 @@
 const VAR = {
-    ENV: "local",
+    ENV: "production",
     ADMIN_BASE_URL_STAGE: "https://stage.admin.redcurry.co/",
     ADMIN_BASE_URL_PROD: "https://admin.redcurry.co/",
     ADMIN_BASE_URL_LOCAL: "http://localhost:3000/",
