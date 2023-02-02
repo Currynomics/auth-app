@@ -4,6 +4,9 @@ node_modules
 /public
 .firebase
 
+# custom non public values (not secrets, just not public)
+/src/assets/constants/index.js
+
 # local env files
 .env
 .env.*
