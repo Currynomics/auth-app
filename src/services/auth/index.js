@@ -18,12 +18,8 @@ const login = async (email, password) => {
         }
 
         const res = await postRequest(LOGIN_URL, body)
-        console.log("res: ", res)
-        Sentry.captureMessage("User logged in (this is temp, remove this capture)");
-
         return { data: res.data, code: 200, message: "OK" }
     } catch (error) {
-        console.log("error: ", error)
         Sentry.captureException(error);
         return { data: undefined, code: 400, message: error.message }
     }

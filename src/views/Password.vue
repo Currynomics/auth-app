@@ -30,9 +30,6 @@
 					</div>
 				</div>
 			</form>
-			<button @click="testSuccess()">
-				Test words
-			</button>
 		</div>
 	</div>
 </template>
