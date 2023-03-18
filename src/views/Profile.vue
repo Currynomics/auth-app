@@ -29,6 +29,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { getAdminBaseUrl } from '../assets/constants'
 import { generateRandomWords } from '../services/auth/index'
 import { setUserSecretWords } from '../services/user/index'
 export default {
@@ -72,7 +73,8 @@ export default {
 			this.loading = false
 		},
 		exitToAdmin() {
-			window.open("https://admin.redcurry.co");
+			const url = getAdminBaseUrl()
+			window.open(url);
 			this.$emit('emitLogout')
 		}
 	}
