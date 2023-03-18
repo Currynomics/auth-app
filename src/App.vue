@@ -10,7 +10,8 @@
 				<div class="nav-content">
 					<a href="https://discord.gg/G4b2jrerb6" target="_blank">Help</a>
 					<router-link v-if="this.$store.state.pUser" to="/profile">Profile</router-link>
-					<router-link v-if="!this.$store.state.pUser" to="/join">Join</router-link>
+					<a href="https://discord.com/channels/904719909894881340/1045400769899278437/1055212003041480724" target="_blank">Join</a>
+					<!-- <router-link v-if="!this.$store.state.pUser" to="/join">Join</router-link> -->
 					<router-link v-if="!userName" to="/login">Login</router-link>
 					<!-- <router-link v-if="userName"><div @click="logOut">Logout</div></router-link> -->
 					<button v-if="userName" type="button" class="red-button" @click="logOut" :disabled="loadingLogout"
