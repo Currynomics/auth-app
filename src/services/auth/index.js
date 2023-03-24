@@ -1,6 +1,6 @@
 import { postRequest } from "../http";
 import randomWords from 'random-words'
-import {getAdminBaseUrl} from '../../assets/constants/index'
+import { getAdminBaseUrl } from '../../assets/constants/index'
 import * as Sentry from "@sentry/browser";
 const RESET_PASSWORD_URL = getAdminBaseUrl() + "api/users/reset-password"
 const LOGIN_URL = getAdminBaseUrl() + "api/users/login"
@@ -12,7 +12,7 @@ const generateRandomWords = (nrOfWords) => {
 
 const login = async (email, password) => {
     try {
-        const body ={
+        const body = {
             email: email,
             password: password
         }
@@ -33,12 +33,15 @@ const createPassword = async (token, password) => {
         }
 
         const res = await postRequest(RESET_PASSWORD_URL, body)
-        console.log("res: ", res)
         return { data: res.data, code: 200, message: "OK" }
     } catch (error) {
-        console.log("error: ", error)
-        Sentry.captureException(error);
-        return { data: undefined, code: 400, message: error.message }
+        // console.log("error: ", error)
+        if (error.response && error.response.data && error.response.data.errors[0] && error.response.data.errors[0].message.includes("expired")) {
+            return { data: "expired", code: 410, message: error.response.data.errors[0].message }
+        } else {
+            Sentry.captureException(error);
+            return { data: undefined, code: 400, message: error.message }
+        }
     }
 }
 

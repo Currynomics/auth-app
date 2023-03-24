@@ -75,8 +75,10 @@ export default {
 					this.pswCreated = true
 					this.$emit('emitNotification', { message: "Password created.", class: "info" })
 					this.$router.push({ name: 'Login' })
-				}
-				else {
+				}else if(res.code == 410) {
+					this.$emit('emitNotification', { message: "Password link expired.", class: "error" })
+					this.pswError = true
+				}else {
 					this.$emit('emitNotification', { message: "Password creation failed.", class: "error" })
 					this.pswError = true
 				}

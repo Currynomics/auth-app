@@ -3,6 +3,6 @@ Redcurry auth app is to allow new users to onboard to Redcurry's hybrid asset ma
 
 # Deploy
 Run 
-> npm build using Node v16.9.0
-Then run 
+> nvm use v16.19.0
+> npm run build
 > firebase deploy

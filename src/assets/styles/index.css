@@ -88,8 +88,8 @@
 	display: inline-flex;
 	align-items: center;
 	font-weight: 400;
-	font-size: 14px;
-	line-height: 14px;
+	font-size: 16px;
+	line-height: 16px;
 }
 
 .notification-btn {
@@ -104,7 +104,7 @@
 }
 
 .notification.error {
-	background-color: #FEECEE;
+	background-color: #ebc8cc;
 }
 
 /* Non mobile only*/
