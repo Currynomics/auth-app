@@ -19,7 +19,7 @@
 						{{ ctaButtonTitle }}
 					</button>
 
-					<div class="psw-guide-container" v-if="!pswCreated">
+					<div class="psw-guide-container" v-if="!pswCreated && !linkExpired">
 						<p><strong>Password must:</strong></p>
 						<p class="psw-guide" :class="{ err: !passwordIsValid.length }">be at least 8 characters long</p>
 						<p class="psw-guide" :class="{ err: !passwordIsValid.special }">include special character</p>
@@ -28,12 +28,16 @@
 						<p class="psw-guide" :class="{ err: !passwordIsValid.low }">include lower case character</p>
 						<p class="psw-guide" :class="{ err: !passwordIsValid.match }">match with re-type</p>
 					</div>
+					<div v-else-if="linkExpired">
+						<p><a :href="requestNewLinkUrl" target="_blank">Request new link</a></p>
+					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 </template>
 <script>
+import { getAdminBaseUrl } from '../assets/constants';
 import { createPassword } from '../services/auth/index'
 import { validatePasswordStrength } from '../services/auth/index'
 export default {
@@ -44,7 +48,9 @@ export default {
 			passwordTwo: '',
 			ctaButtonLoading: false,
 			pswError: '',
-			pswCreated: false
+			pswCreated: false,
+			linkExpired: false,
+			requestNewLinkUrl: getAdminBaseUrl() + "admin/forgot"
 		}
 	},
 	created() {
@@ -73,14 +79,17 @@ export default {
 					this.passwordTwo = ''
 					this.pswError = false
 					this.pswCreated = true
+					this.linkExpired = false
 					this.$emit('emitNotification', { message: "Password created.", class: "info" })
 					this.$router.push({ name: 'Login' })
 				}else if(res.code == 410) {
+					this.linkExpired = true
 					this.$emit('emitNotification', { message: "Password link expired.", class: "error" })
 					this.pswError = true
 				}else {
 					this.$emit('emitNotification', { message: "Password creation failed.", class: "error" })
 					this.pswError = true
+					this.linkExpired = false
 				}
 				this.ctaButtonLoading = false
 			}
